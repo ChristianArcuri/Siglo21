@@ -1,0 +1,37 @@
+[
+  {
+    "Id": 7,
+    "Descripcion": "Pendiente",
+    "CssLabel": "label-danger"
+  },
+  {
+    "Id": 8,
+    "Descripcion": "En Preparacion",
+    "CssLabel": "label-warning"
+  },
+  {
+    "Id": 9,
+    "Descripcion": "En Despacho",
+    "CssLabel": "label-info"
+  },
+  {
+    "Id": 10,
+    "Descripcion": "Entregado",
+    "CssLabel": "label-success"
+  },
+  {
+    "Id": 12,
+    "Descripcion": "Pendiente de Pago",
+    "CssLabel": "label-danger"
+  },
+  {
+    "Id": 13,
+    "Descripcion": "Liquidado",
+    "CssLabel": "label-success"
+  },
+  {
+    "Id": 14,
+    "Descripcion": "Anulado",
+    "CssLabel": "label-danger"
+  }
+]

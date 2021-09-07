@@ -1,0 +1,20 @@
+[
+  {
+    "Id": 1,
+    "Cuit": "20928642837",
+    "Razon_Social": "Antilope S.A.",
+    "Nombre_Fantasia": "Casa Central",
+    "Direccion": "La Rioja 511.",
+    "Localidad": "Córdoba Capital",
+    "Cod_Postal": "5598",
+    "Responsable": "Roberto Gonzalez",
+    "Telefono": "4952-3366",
+    "Email": "central@antilope.com.ar",
+    "Usuario": "demo",
+    "Clave": "demo",
+    "StrImagen": "../img/LogoAntilope1.png",
+    "IdMercadoPago": "8491987968010427",
+    "ClaveMercadoPago": "ZryiWYeA8CD0MH5igzqfcQrAe3PIwIOA",
+    "Direc_Gmap": "Valentín Gómez 2924, Buenos Aires"
+  }  
+]

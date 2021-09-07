@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AntilopeWebDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="AntilopeWebDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Articulos" EntityType="AntilopeWebDBModel.Articulos" />
+    <EntitySet Name="Clientes" EntityType="AntilopeWebDBModel.Clientes" />
+    <EntitySet Name="Pedidos" EntityType="AntilopeWebDBModel.Pedidos" />
+    <EntitySet Name="Pedidos_Detalle" EntityType="AntilopeWebDBModel.Pedidos_Detalle" />
+    <AssociationSet Name="FK_Pedidos_Detalle_Articulos" Association="AntilopeWebDBModel.FK_Pedidos_Detalle_Articulos">
+      <End Role="Articulos" EntitySet="Articulos" />
+      <End Role="Pedidos_Detalle" EntitySet="Pedidos_Detalle" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pedidos_Clientes" Association="AntilopeWebDBModel.FK_Pedidos_Clientes">
+      <End Role="Clientes" EntitySet="Clientes" />
+      <End Role="Pedidos" EntitySet="Pedidos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pedidos_Detalle_Pedidos" Association="AntilopeWebDBModel.FK_Pedidos_Detalle_Pedidos">
+      <End Role="Pedidos" EntitySet="Pedidos" />
+      <End Role="Pedidos_Detalle" EntitySet="Pedidos_Detalle" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Articulos">
+    <Key>
+      <PropertyRef Name="SKU" />
+    </Key>
+    <Property Name="SKU" Type="Int64" Nullable="false" />
+    <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Medida" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Unidad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Id_SubCategoria" Type="Int32" />
+    <Property Name="StrImagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Oferta" Type="Boolean" />
+    <Property Name="StrImagenBig" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="StrImagenSec1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="StrImagenSec2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="StrImagenSec3" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="StrImagenSec4" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="StrImagenSec5" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Stock" Type="Int32" />
+    <Property Name="Precio_Venta" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Precio_Oferta" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Habilitado" Type="Boolean" />
+    <Property Name="FechaUltModif" Type="DateTime" Precision="3" />
+    <Property Name="Oferta_FechaInicio" Type="DateTime" Precision="3" />
+    <Property Name="Oferta_FechaFin" Type="DateTime" Precision="3" />
+    <Property Name="Oferta_Vigente" Type="Boolean" />
+    <NavigationProperty Name="Pedidos_Detalle" Relationship="AntilopeWebDBModel.FK_Pedidos_Detalle_Articulos" FromRole="Articulos" ToRole="Pedidos_Detalle" />
+  </EntityType>
+  <EntityType Name="Clientes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Clave" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DNI" Type="Int32" Nullable="false" />
+    <Property Name="Nombre" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Mail" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Direccion" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Departamento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Fecha_Solucitud" Type="DateTime" Precision="3" />
+    <Property Name="Fecha_Alta" Type="DateTime" Precision="3" />
+    <Property Name="Token" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Apellido" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Pedidos" Relationship="AntilopeWebDBModel.FK_Pedidos_Clientes" FromRole="Clientes" ToRole="Pedidos" />
+  </EntityType>
+  <EntityType Name="Pedidos">
+    <Key>
+      <PropertyRef Name="IdPedido" />
+    </Key>
+    <Property Name="IdPedido" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idSucursal" Type="Int32" />
+    <Property Name="idCliente" Type="Int32" />
+    <Property Name="Fecha_Compra" Type="DateTime" Precision="3" />
+    <Property Name="IdEstado" Type="Int32" />
+    <Property Name="Importe" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Fecha_Entrega" Type="DateTime" Precision="3" />
+    <Property Name="Hora_Desde" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Hora_Hasta" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="preference_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IdTipoPago" Type="Int32" />
+    <Property Name="FormaEntrega" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Clientes" Relationship="AntilopeWebDBModel.FK_Pedidos_Clientes" FromRole="Pedidos" ToRole="Clientes" />
+    <NavigationProperty Name="Pedidos_Detalle" Relationship="AntilopeWebDBModel.FK_Pedidos_Detalle_Pedidos" FromRole="Pedidos" ToRole="Pedidos_Detalle" />
+  </EntityType>
+  <EntityType Name="Pedidos_Detalle">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idPedido" Type="Int32" />
+    <Property Name="SKU" Type="Int64" />
+    <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Cantidad" Type="Int32" />
+    <Property Name="SubTotal" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="Articulos" Relationship="AntilopeWebDBModel.FK_Pedidos_Detalle_Articulos" FromRole="Pedidos_Detalle" ToRole="Articulos" />
+    <NavigationProperty Name="Pedidos" Relationship="AntilopeWebDBModel.FK_Pedidos_Detalle_Pedidos" FromRole="Pedidos_Detalle" ToRole="Pedidos" />
+  </EntityType>
+  <Association Name="FK_Pedidos_Detalle_Articulos">
+    <End Type="AntilopeWebDBModel.Articulos" Role="Articulos" Multiplicity="0..1" />
+    <End Type="AntilopeWebDBModel.Pedidos_Detalle" Role="Pedidos_Detalle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Articulos">
+        <PropertyRef Name="SKU" />
+      </Principal>
+      <Dependent Role="Pedidos_Detalle">
+        <PropertyRef Name="SKU" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pedidos_Clientes">
+    <End Type="AntilopeWebDBModel.Clientes" Role="Clientes" Multiplicity="0..1" />
+    <End Type="AntilopeWebDBModel.Pedidos" Role="Pedidos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clientes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Pedidos">
+        <PropertyRef Name="idCliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pedidos_Detalle_Pedidos">
+    <End Type="AntilopeWebDBModel.Pedidos" Role="Pedidos" Multiplicity="0..1" />
+    <End Type="AntilopeWebDBModel.Pedidos_Detalle" Role="Pedidos_Detalle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pedidos">
+        <PropertyRef Name="IdPedido" />
+      </Principal>
+      <Dependent Role="Pedidos_Detalle">
+        <PropertyRef Name="idPedido" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

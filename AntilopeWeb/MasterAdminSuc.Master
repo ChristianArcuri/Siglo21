@@ -1,0 +1,294 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterAdminSuc.master.cs" Inherits="AntilopeWeb.MasterAdminSuc" %>
+
+<%@ Register Src="~/WebControls/UCCampanaPedidos.ascx" TagPrefix="uc1" TagName="UCCampanaPedidos" %>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Antilope SA | Admin</title>  
+    <link rel="shortcut icon" type="image/x-icon" href="/img/faviconmy.ico" />
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  
+  
+   <asp:PlaceHolder runat="server">
+        <%: Styles.Render("~/bundles/MasterAdmSucCss") %>        
+    </asp:PlaceHolder>	
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <script type="text/javascript">
+        function AlertOK() {            
+            $("#modal-success").modal('show');
+        }
+        function AlertError() {
+            $("#modal-danger").modal('show');            
+        }
+        function AlertErrorCustom(title, body) {
+            $("#modal-danger-custom").modal('show');
+            $("#titleDangerCustom").html(title);
+            $("#bodyDangerCustom").html(body)
+        }
+        
+        function NotyOK(mensaje) {
+            new Noty({
+                text: mensaje,
+                type: 'success', layout: 'topRight', timeout: 4000,
+                progressBar: true, closeWith: ['click', 'button'],
+                animation: { open: 'noty_effects_open', close: 'noty_effects_close' }
+            }).show();
+        }
+        function ReturnPage() {
+            window.history.back();
+        }
+        function GetContadores(Sucursal) {
+            $.ajax({
+                type: "POST",
+                url: "DefaultSuc.aspx/GetContadores",
+                data: "{IdSucursal: " + Sucursal + "}",
+                traditional: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var Resp = (typeof response.d) == 'string' ? eval('(' + response.d + ')') : response.d;
+                    if (Resp != null) {
+                        $(".CantPedPend").html(Resp[0].PedidosSinEntregar);
+                        $(".CantEntregasOk").html(Resp[0].EntregasOK);
+                        $(".CantClientesFrec").html(Resp[0].ClientesFrec);
+                        $(".VentasRealiz").html(Resp[0].VentasRealizadas);
+                        $(".PedidosPendPagos").html(Resp[0].PedidosPendPagos);
+                        $(".PedidosPendientes").html(Resp[0].PedidosPendientes);
+                        $(".PedidosEnPrep").html(Resp[0].PedidosEnPrep);
+                        $(".PedidosEnDesp").html(Resp[0].PedidosEnDesp);
+                        $(".TotalEfectivo").html(Resp[0].TotalEfectivo);
+                        $(".TotalTarjetas").html(Resp[0].TotalTarjetas);
+                    }
+
+                },
+                error: function (result) {
+                    alert('ERROR ' + result.status + ' ' + result.statusText);
+                }
+            });
+        }
+
+        
+    </script>
+
+    <asp:ContentPlaceHolder ID="CphJsSup" runat="server">
+        
+    </asp:ContentPlaceHolder>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <form id="form1" runat="server">
+        <asp:ScriptManager EnablePageMethods="true" ID="ScriptManager1" runat="server" EnablePartialRendering="true"></asp:ScriptManager>
+        <asp:ContentPlaceHolder ID="ContentBeginAndEndHandler" runat="server">
+        
+        </asp:ContentPlaceHolder>
+        <div class="wrapper">
+
+          <header class="main-header">
+            <!-- Logo -->
+            <a href="DefaultSuc.aspx" class="logo">
+              <!-- mini logo for sidebar mini 50x50 pixels -->
+              <span class="logo-mini"><b>MI</b>SY</span>
+              <!-- logo for regular state and mobile devices -->
+              <span class="logo-lg">
+                  <b>Antilope</b>SA
+              </span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+              <!-- Sidebar toggle button-->
+              <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+              </a>
+
+                <uc1:UCCampanaPedidos runat="server" ID="UCCampanaPedidos" />			
+                  <!-- User Account: style can be found in dropdown.less -->                  
+              
+            </nav>
+          </header>
+          <!-- Left side column. contains the logo and sidebar -->
+          <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">              
+              
+              <!-- sidebar menu: : style can be found in sidebar.less -->
+              <ul class="sidebar-menu" data-widget="tree">
+                <li class="header">MAIN NAVIGATION</li>
+                <li>
+                  <a href="../AdminSuc/DefaultSuc.aspx">
+                    <i class="fa fa-dashboard"></i> <span>Inicio</span>                    
+                  </a>               
+                </li>
+                <li class="treeview">
+                  <a href="#">
+                    <i class="fa fa-cart-arrow-down"></i>
+                    <span>Pedidos</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="../AdminSuc/ListaPedidos.aspx?Est=7"><i class="fa fa-shopping-cart"></i> Pendientes</a></li>
+                    <li><a href="../AdminSuc/ListaPedidos.aspx?Est=8"><i class="fa fa-hourglass-half"></i> En Preparación</a></li>
+                    <li><a href="../AdminSuc/ListaPedidos.aspx?Est=9"><i class="fa fa-archive"></i> Para Entregar</a></li>
+                    <li><a href="../AdminSuc/ListaPedidos.aspx?Est=10"><i class="fa fa-thumbs-o-up"></i> Entregados</a></li>
+                  </ul>
+                </li>
+                <li class="treeview">
+                  <a href="#">
+                    <i class="fa fa-binoculars"></i>
+                    <span>Articulos</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">      
+                      <li><a href="../AdminSuc/BusquedaArticulos.aspx"><i class="fa fa-binoculars"></i> Busqueda de Articulos</a></li>                                      
+                      <li><a href="../AdminSuc/ListaPreciosSuc.aspx"><i class="fa fa-cart-plus"></i> Listado Articulos</a></li>
+                  </ul>
+                </li> 
+                <li>
+                  <a href="../AdminSuc/ListaClientes.aspx">
+                    <i class="fa fa-users"></i> <span>Clientes</span>                    
+                  </a>               
+                </li>                
+
+              </ul>
+            </section>
+            <!-- /.sidebar -->
+          </aside>
+
+
+
+            <!-- Content Wrapper. Contains page content -->
+          <div class="content-wrapper">
+              <div class="row">
+                    <div class="alert alert-success" id="MensOk" style="display:none">
+                        <button type="button" class="close" data-dismiss="alert">x</button>
+                        <strong>Perfecto!</strong> Registros OK
+                    </div>
+                    <div class="alert alert-warning alert-dismissible" role="alert" id="MensError" style="display:none">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <strong>Error!</strong> No se puedo actualizar el registro.
+                    </div>
+                </div>
+
+              <asp:UpdatePanel ID="UpdatePaneBody" runat="server"  UpdateMode="Conditional">
+                <ContentTemplate>
+                <asp:Panel ID="panelBody" runat="server">
+                      <asp:ContentPlaceHolder ID="CphBody" runat="server">
+        
+                      </asp:ContentPlaceHolder>
+                </asp:Panel>
+                </ContentTemplate>
+              </asp:UpdatePanel>
+
+                <div class="modal modal-success fade" id="modal-success" data-backdrop="static">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><i class="fa fa-thumbs-o-up"></i> Perfecto!</h4>
+                    </div>
+                    <div class="modal-body">
+                    <p>Registros OK</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cerrar</button>
+                        
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+                <div class="modal modal-danger fade" id="modal-danger" data-backdrop="static">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><i class="fa fa-times-circle"></i> Error!</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>No se pudo actualizar el registro.</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cerrar</button>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+              <div class="modal modal-danger fade" id="modal-danger-custom" data-backdrop="static">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><i class="fa fa-times-circle"></i> <asp:Label runat="server" Text=" Error!" ID="titleDangerCustom"></asp:Label></h4>
+                      </div>
+                      <div class="modal-body">
+                        <p id="bodyDangerCustom">No se pudo actualizar el registro.</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cerrar</button>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+          </div>
+          <!-- /.content-wrapper -->	
+
+          <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+              <b>Version</b> 2.2.0
+            </div>
+            <strong>Copyright &copy; 2019 <a href="#">Unidato</a>.</strong> Todos los derechos reservados.
+          </footer>
+
+          
+          <!-- Add the sidebar's background. This div must be placed
+               immediately after the control sidebar -->
+          <div class="control-sidebar-bg"></div>
+        </div>
+        <!-- ./wrapper -->
+    </form>
+
+<script src="../js/jquery.min.js"></script>  <!-- jQuery 3 -->
+<script src="../js/jquery-ui.min.js"></script>  <!-- jQuery UI 1.11.4 -->
+
+<asp:PlaceHolder runat="server">
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+        $(document).ready(function () {            
+            GetDataCampana();
+            GetDataSucursal();
+        });
+    </script>
+    <%: Scripts.Render("~/bundles/ScriptsFootAdminSuc") %>
+</asp:PlaceHolder>  
+    <asp:ContentPlaceHolder ID="CphJsInf" runat="server">
+        
+    </asp:ContentPlaceHolder>
+</body>
+</html>

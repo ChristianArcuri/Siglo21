@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AntilopeWebDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Articulos">
+    <Key>
+      <PropertyRef Name="SKU" />
+    </Key>
+    <Property Name="SKU" Type="bigint" Nullable="false" />
+    <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+    <Property Name="Medida" Type="varchar" MaxLength="50" />
+    <Property Name="Unidad" Type="varchar" MaxLength="50" />
+    <Property Name="Id_SubCategoria" Type="int" />
+    <Property Name="StrImagen" Type="varchar(max)" />
+    <Property Name="Oferta" Type="bit" />
+    <Property Name="StrImagenBig" Type="varchar(max)" />
+    <Property Name="StrImagenSec1" Type="varchar(max)" />
+    <Property Name="StrImagenSec2" Type="varchar(max)" />
+    <Property Name="StrImagenSec3" Type="varchar(max)" />
+    <Property Name="StrImagenSec4" Type="varchar(max)" />
+    <Property Name="StrImagenSec5" Type="varchar(max)" />
+    <Property Name="Stock" Type="int" />
+    <Property Name="Precio_Venta" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Precio_Oferta" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Habilitado" Type="bit" />
+    <Property Name="FechaUltModif" Type="datetime" />
+    <Property Name="Oferta_FechaInicio" Type="datetime" />
+    <Property Name="Oferta_FechaFin" Type="datetime" />
+    <Property Name="Oferta_Vigente" Type="bit" />
+  </EntityType>
+  <EntityType Name="Clientes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Usuario" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Clave" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DNI" Type="int" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="Mail" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="Telefono" Type="varchar" MaxLength="50" />
+    <Property Name="Direccion" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="Departamento" Type="varchar" MaxLength="50" />
+    <Property Name="Estado" Type="varchar" MaxLength="50" />
+    <Property Name="Fecha_Solucitud" Type="datetime" />
+    <Property Name="Fecha_Alta" Type="datetime" />
+    <Property Name="Token" Type="varchar" MaxLength="150" />
+    <Property Name="Apellido" Type="varchar" MaxLength="150" />
+    <Property Name="Imagen" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="Pedidos">
+    <Key>
+      <PropertyRef Name="IdPedido" />
+    </Key>
+    <Property Name="IdPedido" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idSucursal" Type="int" />
+    <Property Name="idCliente" Type="int" />
+    <Property Name="Fecha_Compra" Type="datetime" />
+    <Property Name="IdEstado" Type="int" />
+    <Property Name="Importe" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Fecha_Entrega" Type="datetime" />
+    <Property Name="Hora_Desde" Type="varchar" MaxLength="50" />
+    <Property Name="Hora_Hasta" Type="varchar" MaxLength="50" />
+    <Property Name="preference_id" Type="varchar(max)" />
+    <Property Name="IdTipoPago" Type="int" />
+    <Property Name="FormaEntrega" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Pedidos_Detalle">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idPedido" Type="int" />
+    <Property Name="SKU" Type="bigint" />
+    <Property Name="Precio" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Cantidad" Type="int" />
+    <Property Name="SubTotal" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <Association Name="FK_Pedidos_Clientes">
+    <End Role="Clientes" Type="Self.Clientes" Multiplicity="0..1" />
+    <End Role="Pedidos" Type="Self.Pedidos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clientes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Pedidos">
+        <PropertyRef Name="idCliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pedidos_Detalle_Articulos">
+    <End Role="Articulos" Type="Self.Articulos" Multiplicity="0..1" />
+    <End Role="Pedidos_Detalle" Type="Self.Pedidos_Detalle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Articulos">
+        <PropertyRef Name="SKU" />
+      </Principal>
+      <Dependent Role="Pedidos_Detalle">
+        <PropertyRef Name="SKU" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pedidos_Detalle_Pedidos">
+    <End Role="Pedidos" Type="Self.Pedidos" Multiplicity="0..1" />
+    <End Role="Pedidos_Detalle" Type="Self.Pedidos_Detalle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pedidos">
+        <PropertyRef Name="IdPedido" />
+      </Principal>
+      <Dependent Role="Pedidos_Detalle">
+        <PropertyRef Name="idPedido" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AntilopeWebDBModelStoreContainer">
+    <EntitySet Name="Articulos" EntityType="Self.Articulos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Pedidos" EntityType="Self.Pedidos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Pedidos_Detalle" EntityType="Self.Pedidos_Detalle" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Pedidos_Clientes" Association="Self.FK_Pedidos_Clientes">
+      <End Role="Clientes" EntitySet="Clientes" />
+      <End Role="Pedidos" EntitySet="Pedidos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pedidos_Detalle_Articulos" Association="Self.FK_Pedidos_Detalle_Articulos">
+      <End Role="Articulos" EntitySet="Articulos" />
+      <End Role="Pedidos_Detalle" EntitySet="Pedidos_Detalle" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pedidos_Detalle_Pedidos" Association="Self.FK_Pedidos_Detalle_Pedidos">
+      <End Role="Pedidos" EntitySet="Pedidos" />
+      <End Role="Pedidos_Detalle" EntitySet="Pedidos_Detalle" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

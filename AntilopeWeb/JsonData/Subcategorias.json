@@ -1,0 +1,52 @@
+[
+  {
+    "Id": 1,
+    "Nombre": "Lavarropas",
+    "Id_Categoria": 1
+  },
+  {
+    "Id": 2,
+    "Nombre": "Lavavajillas",
+    "Id_Categoria": 1
+  },
+  {
+    "Id": 3,
+    "Nombre": "Cafeteras",
+    "Id_Categoria": 2
+  },
+  {
+    "Id": 4,
+    "Nombre": "Licuadoras",
+    "Id_Categoria": 2
+  },
+  {
+    "Id": 5,
+    "Nombre": "Tostadoras",
+    "Id_Categoria": 2
+  },
+  {
+    "Id": 6,
+    "Nombre": "Tablets",
+    "Id_Categoria": 3
+  },
+  {
+    "Id": 7,
+    "Nombre": "Notebooks",
+    "Id_Categoria": 3
+  },
+  {
+    "Id": 8,
+    "Nombre": "Aires Acondicionados",
+    "Id_Categoria": 4
+  },
+  {
+    "Id": 9,
+    "Nombre": "Ventiladores",
+    "Id_Categoria": 4
+  },
+  {
+    "Id": 10,
+    "Nombre": "Calefaccion",
+    "Id_Categoria": 4
+  }
+]

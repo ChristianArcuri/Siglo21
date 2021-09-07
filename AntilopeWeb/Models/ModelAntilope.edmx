@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AntilopeWebDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Articulos">
+          <Key>
+            <PropertyRef Name="SKU" />
+          </Key>
+          <Property Name="SKU" Type="bigint" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="Medida" Type="varchar" MaxLength="50" />
+          <Property Name="Unidad" Type="varchar" MaxLength="50" />
+          <Property Name="Id_SubCategoria" Type="int" />
+          <Property Name="StrImagen" Type="varchar(max)" />
+          <Property Name="Oferta" Type="bit" />
+          <Property Name="StrImagenBig" Type="varchar(max)" />
+          <Property Name="StrImagenSec1" Type="varchar(max)" />
+          <Property Name="StrImagenSec2" Type="varchar(max)" />
+          <Property Name="StrImagenSec3" Type="varchar(max)" />
+          <Property Name="StrImagenSec4" Type="varchar(max)" />
+          <Property Name="StrImagenSec5" Type="varchar(max)" />
+          <Property Name="Stock" Type="int" />
+          <Property Name="Precio_Venta" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Precio_Oferta" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Habilitado" Type="bit" />
+          <Property Name="FechaUltModif" Type="datetime" />
+          <Property Name="Oferta_FechaInicio" Type="datetime" />
+          <Property Name="Oferta_FechaFin" Type="datetime" />
+          <Property Name="Oferta_Vigente" Type="bit" />
+        </EntityType>
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Usuario" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Clave" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DNI" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Mail" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Telefono" Type="varchar" MaxLength="50" />
+          <Property Name="Direccion" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Departamento" Type="varchar" MaxLength="50" />
+          <Property Name="Estado" Type="varchar" MaxLength="50" />
+          <Property Name="Fecha_Solucitud" Type="datetime" />
+          <Property Name="Fecha_Alta" Type="datetime" />
+          <Property Name="Token" Type="varchar" MaxLength="150" />
+          <Property Name="Apellido" Type="varchar" MaxLength="150" />
+          <Property Name="Imagen" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Pedidos">
+          <Key>
+            <PropertyRef Name="IdPedido" />
+          </Key>
+          <Property Name="IdPedido" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idSucursal" Type="int" />
+          <Property Name="idCliente" Type="int" />
+          <Property Name="Fecha_Compra" Type="datetime" />
+          <Property Name="IdEstado" Type="int" />
+          <Property Name="Importe" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Fecha_Entrega" Type="datetime" />
+          <Property Name="Hora_Desde" Type="varchar" MaxLength="50" />
+          <Property Name="Hora_Hasta" Type="varchar" MaxLength="50" />
+          <Property Name="preference_id" Type="varchar(max)" />
+          <Property Name="IdTipoPago" Type="int" />
+          <Property Name="FormaEntrega" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Pedidos_Detalle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idPedido" Type="int" />
+          <Property Name="SKU" Type="bigint" />
+          <Property Name="Precio" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Cantidad" Type="int" />
+          <Property Name="SubTotal" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <Association Name="FK_Pedidos_Clientes">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="0..1" />
+          <End Role="Pedidos" Type="Self.Pedidos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pedidos">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pedidos_Detalle_Articulos">
+          <End Role="Articulos" Type="Self.Articulos" Multiplicity="0..1" />
+          <End Role="Pedidos_Detalle" Type="Self.Pedidos_Detalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articulos">
+              <PropertyRef Name="SKU" />
+            </Principal>
+            <Dependent Role="Pedidos_Detalle">
+              <PropertyRef Name="SKU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pedidos_Detalle_Pedidos">
+          <End Role="Pedidos" Type="Self.Pedidos" Multiplicity="0..1" />
+          <End Role="Pedidos_Detalle" Type="Self.Pedidos_Detalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pedidos">
+              <PropertyRef Name="IdPedido" />
+            </Principal>
+            <Dependent Role="Pedidos_Detalle">
+              <PropertyRef Name="idPedido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AntilopeWebDBModelStoreContainer">
+          <EntitySet Name="Articulos" EntityType="Self.Articulos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pedidos" EntityType="Self.Pedidos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pedidos_Detalle" EntityType="Self.Pedidos_Detalle" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Pedidos_Clientes" Association="Self.FK_Pedidos_Clientes">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Pedidos" EntitySet="Pedidos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pedidos_Detalle_Articulos" Association="Self.FK_Pedidos_Detalle_Articulos">
+            <End Role="Articulos" EntitySet="Articulos" />
+            <End Role="Pedidos_Detalle" EntitySet="Pedidos_Detalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pedidos_Detalle_Pedidos" Association="Self.FK_Pedidos_Detalle_Pedidos">
+            <End Role="Pedidos" EntitySet="Pedidos" />
+            <End Role="Pedidos_Detalle" EntitySet="Pedidos_Detalle" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AntilopeWebDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AntilopeWebDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Articulos" EntityType="AntilopeWebDBModel.Articulos" />
+          <EntitySet Name="Clientes" EntityType="AntilopeWebDBModel.Clientes" />
+          <EntitySet Name="Pedidos" EntityType="AntilopeWebDBModel.Pedidos" />
+          <EntitySet Name="Pedidos_Detalle" EntityType="AntilopeWebDBModel.Pedidos_Detalle" />
+          <AssociationSet Name="FK_Pedidos_Detalle_Articulos" Association="AntilopeWebDBModel.FK_Pedidos_Detalle_Articulos">
+            <End Role="Articulos" EntitySet="Articulos" />
+            <End Role="Pedidos_Detalle" EntitySet="Pedidos_Detalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pedidos_Clientes" Association="AntilopeWebDBModel.FK_Pedidos_Clientes">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Pedidos" EntitySet="Pedidos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pedidos_Detalle_Pedidos" Association="AntilopeWebDBModel.FK_Pedidos_Detalle_Pedidos">
+            <End Role="Pedidos" EntitySet="Pedidos" />
+            <End Role="Pedidos_Detalle" EntitySet="Pedidos_Detalle" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Articulos">
+          <Key>
+            <PropertyRef Name="SKU" />
+          </Key>
+          <Property Name="SKU" Type="Int64" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Medida" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Unidad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Id_SubCategoria" Type="Int32" />
+          <Property Name="StrImagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Oferta" Type="Boolean" />
+          <Property Name="StrImagenBig" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StrImagenSec1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StrImagenSec2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StrImagenSec3" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StrImagenSec4" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StrImagenSec5" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Stock" Type="Int32" />
+          <Property Name="Precio_Venta" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Precio_Oferta" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Habilitado" Type="Boolean" />
+          <Property Name="FechaUltModif" Type="DateTime" Precision="3" />
+          <Property Name="Oferta_FechaInicio" Type="DateTime" Precision="3" />
+          <Property Name="Oferta_FechaFin" Type="DateTime" Precision="3" />
+          <Property Name="Oferta_Vigente" Type="Boolean" />
+          <NavigationProperty Name="Pedidos_Detalle" Relationship="AntilopeWebDBModel.FK_Pedidos_Detalle_Articulos" FromRole="Articulos" ToRole="Pedidos_Detalle" />
+        </EntityType>
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Usuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Clave" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DNI" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Mail" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Departamento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha_Solucitud" Type="DateTime" Precision="3" />
+          <Property Name="Fecha_Alta" Type="DateTime" Precision="3" />
+          <Property Name="Token" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Apellido" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Pedidos" Relationship="AntilopeWebDBModel.FK_Pedidos_Clientes" FromRole="Clientes" ToRole="Pedidos" />
+        </EntityType>
+        <EntityType Name="Pedidos">
+          <Key>
+            <PropertyRef Name="IdPedido" />
+          </Key>
+          <Property Name="IdPedido" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idSucursal" Type="Int32" />
+          <Property Name="idCliente" Type="Int32" />
+          <Property Name="Fecha_Compra" Type="DateTime" Precision="3" />
+          <Property Name="IdEstado" Type="Int32" />
+          <Property Name="Importe" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Fecha_Entrega" Type="DateTime" Precision="3" />
+          <Property Name="Hora_Desde" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Hora_Hasta" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="preference_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IdTipoPago" Type="Int32" />
+          <Property Name="FormaEntrega" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Clientes" Relationship="AntilopeWebDBModel.FK_Pedidos_Clientes" FromRole="Pedidos" ToRole="Clientes" />
+          <NavigationProperty Name="Pedidos_Detalle" Relationship="AntilopeWebDBModel.FK_Pedidos_Detalle_Pedidos" FromRole="Pedidos" ToRole="Pedidos_Detalle" />
+        </EntityType>
+        <EntityType Name="Pedidos_Detalle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idPedido" Type="Int32" />
+          <Property Name="SKU" Type="Int64" />
+          <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Cantidad" Type="Int32" />
+          <Property Name="SubTotal" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="Articulos" Relationship="AntilopeWebDBModel.FK_Pedidos_Detalle_Articulos" FromRole="Pedidos_Detalle" ToRole="Articulos" />
+          <NavigationProperty Name="Pedidos" Relationship="AntilopeWebDBModel.FK_Pedidos_Detalle_Pedidos" FromRole="Pedidos_Detalle" ToRole="Pedidos" />
+        </EntityType>
+        <Association Name="FK_Pedidos_Detalle_Articulos">
+          <End Type="AntilopeWebDBModel.Articulos" Role="Articulos" Multiplicity="0..1" />
+          <End Type="AntilopeWebDBModel.Pedidos_Detalle" Role="Pedidos_Detalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articulos">
+              <PropertyRef Name="SKU" />
+            </Principal>
+            <Dependent Role="Pedidos_Detalle">
+              <PropertyRef Name="SKU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pedidos_Clientes">
+          <End Type="AntilopeWebDBModel.Clientes" Role="Clientes" Multiplicity="0..1" />
+          <End Type="AntilopeWebDBModel.Pedidos" Role="Pedidos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pedidos">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pedidos_Detalle_Pedidos">
+          <End Type="AntilopeWebDBModel.Pedidos" Role="Pedidos" Multiplicity="0..1" />
+          <End Type="AntilopeWebDBModel.Pedidos_Detalle" Role="Pedidos_Detalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pedidos">
+              <PropertyRef Name="IdPedido" />
+            </Principal>
+            <Dependent Role="Pedidos_Detalle">
+              <PropertyRef Name="idPedido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AntilopeWebDBModelStoreContainer" CdmEntityContainer="AntilopeWebDBEntities">
+          <EntitySetMapping Name="Articulos">
+            <EntityTypeMapping TypeName="AntilopeWebDBModel.Articulos">
+              <MappingFragment StoreEntitySet="Articulos">
+                <ScalarProperty Name="Oferta_Vigente" ColumnName="Oferta_Vigente" />
+                <ScalarProperty Name="Oferta_FechaFin" ColumnName="Oferta_FechaFin" />
+                <ScalarProperty Name="Oferta_FechaInicio" ColumnName="Oferta_FechaInicio" />
+                <ScalarProperty Name="FechaUltModif" ColumnName="FechaUltModif" />
+                <ScalarProperty Name="Habilitado" ColumnName="Habilitado" />
+                <ScalarProperty Name="Precio_Oferta" ColumnName="Precio_Oferta" />
+                <ScalarProperty Name="Precio_Venta" ColumnName="Precio_Venta" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="StrImagenSec5" ColumnName="StrImagenSec5" />
+                <ScalarProperty Name="StrImagenSec4" ColumnName="StrImagenSec4" />
+                <ScalarProperty Name="StrImagenSec3" ColumnName="StrImagenSec3" />
+                <ScalarProperty Name="StrImagenSec2" ColumnName="StrImagenSec2" />
+                <ScalarProperty Name="StrImagenSec1" ColumnName="StrImagenSec1" />
+                <ScalarProperty Name="StrImagenBig" ColumnName="StrImagenBig" />
+                <ScalarProperty Name="Oferta" ColumnName="Oferta" />
+                <ScalarProperty Name="StrImagen" ColumnName="StrImagen" />
+                <ScalarProperty Name="Id_SubCategoria" ColumnName="Id_SubCategoria" />
+                <ScalarProperty Name="Unidad" ColumnName="Unidad" />
+                <ScalarProperty Name="Medida" ColumnName="Medida" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="SKU" ColumnName="SKU" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="AntilopeWebDBModel.Clientes">
+              <MappingFragment StoreEntitySet="Clientes">
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Fecha_Alta" ColumnName="Fecha_Alta" />
+                <ScalarProperty Name="Fecha_Solucitud" ColumnName="Fecha_Solucitud" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Departamento" ColumnName="Departamento" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Mail" ColumnName="Mail" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="DNI" ColumnName="DNI" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pedidos">
+            <EntityTypeMapping TypeName="AntilopeWebDBModel.Pedidos">
+              <MappingFragment StoreEntitySet="Pedidos">
+                <ScalarProperty Name="FormaEntrega" ColumnName="FormaEntrega" />
+                <ScalarProperty Name="IdTipoPago" ColumnName="IdTipoPago" />
+                <ScalarProperty Name="preference_id" ColumnName="preference_id" />
+                <ScalarProperty Name="Hora_Hasta" ColumnName="Hora_Hasta" />
+                <ScalarProperty Name="Hora_Desde" ColumnName="Hora_Desde" />
+                <ScalarProperty Name="Fecha_Entrega" ColumnName="Fecha_Entrega" />
+                <ScalarProperty Name="Importe" ColumnName="Importe" />
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+                <ScalarProperty Name="Fecha_Compra" ColumnName="Fecha_Compra" />
+                <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+                <ScalarProperty Name="idSucursal" ColumnName="idSucursal" />
+                <ScalarProperty Name="IdPedido" ColumnName="IdPedido" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pedidos_Detalle">
+            <EntityTypeMapping TypeName="AntilopeWebDBModel.Pedidos_Detalle">
+              <MappingFragment StoreEntitySet="Pedidos_Detalle">
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="SKU" ColumnName="SKU" />
+                <ScalarProperty Name="idPedido" ColumnName="idPedido" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

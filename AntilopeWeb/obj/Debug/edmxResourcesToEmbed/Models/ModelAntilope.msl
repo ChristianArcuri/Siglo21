@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AntilopeWebDBModelStoreContainer" CdmEntityContainer="AntilopeWebDBEntities">
+    <EntitySetMapping Name="Articulos">
+      <EntityTypeMapping TypeName="AntilopeWebDBModel.Articulos">
+        <MappingFragment StoreEntitySet="Articulos">
+          <ScalarProperty Name="Oferta_Vigente" ColumnName="Oferta_Vigente" />
+          <ScalarProperty Name="Oferta_FechaFin" ColumnName="Oferta_FechaFin" />
+          <ScalarProperty Name="Oferta_FechaInicio" ColumnName="Oferta_FechaInicio" />
+          <ScalarProperty Name="FechaUltModif" ColumnName="FechaUltModif" />
+          <ScalarProperty Name="Habilitado" ColumnName="Habilitado" />
+          <ScalarProperty Name="Precio_Oferta" ColumnName="Precio_Oferta" />
+          <ScalarProperty Name="Precio_Venta" ColumnName="Precio_Venta" />
+          <ScalarProperty Name="Stock" ColumnName="Stock" />
+          <ScalarProperty Name="StrImagenSec5" ColumnName="StrImagenSec5" />
+          <ScalarProperty Name="StrImagenSec4" ColumnName="StrImagenSec4" />
+          <ScalarProperty Name="StrImagenSec3" ColumnName="StrImagenSec3" />
+          <ScalarProperty Name="StrImagenSec2" ColumnName="StrImagenSec2" />
+          <ScalarProperty Name="StrImagenSec1" ColumnName="StrImagenSec1" />
+          <ScalarProperty Name="StrImagenBig" ColumnName="StrImagenBig" />
+          <ScalarProperty Name="Oferta" ColumnName="Oferta" />
+          <ScalarProperty Name="StrImagen" ColumnName="StrImagen" />
+          <ScalarProperty Name="Id_SubCategoria" ColumnName="Id_SubCategoria" />
+          <ScalarProperty Name="Unidad" ColumnName="Unidad" />
+          <ScalarProperty Name="Medida" ColumnName="Medida" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="SKU" ColumnName="SKU" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Clientes">
+      <EntityTypeMapping TypeName="AntilopeWebDBModel.Clientes">
+        <MappingFragment StoreEntitySet="Clientes">
+          <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+          <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+          <ScalarProperty Name="Token" ColumnName="Token" />
+          <ScalarProperty Name="Fecha_Alta" ColumnName="Fecha_Alta" />
+          <ScalarProperty Name="Fecha_Solucitud" ColumnName="Fecha_Solucitud" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Departamento" ColumnName="Departamento" />
+          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+          <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+          <ScalarProperty Name="Mail" ColumnName="Mail" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="DNI" ColumnName="DNI" />
+          <ScalarProperty Name="Clave" ColumnName="Clave" />
+          <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pedidos">
+      <EntityTypeMapping TypeName="AntilopeWebDBModel.Pedidos">
+        <MappingFragment StoreEntitySet="Pedidos">
+          <ScalarProperty Name="FormaEntrega" ColumnName="FormaEntrega" />
+          <ScalarProperty Name="IdTipoPago" ColumnName="IdTipoPago" />
+          <ScalarProperty Name="preference_id" ColumnName="preference_id" />
+          <ScalarProperty Name="Hora_Hasta" ColumnName="Hora_Hasta" />
+          <ScalarProperty Name="Hora_Desde" ColumnName="Hora_Desde" />
+          <ScalarProperty Name="Fecha_Entrega" ColumnName="Fecha_Entrega" />
+          <ScalarProperty Name="Importe" ColumnName="Importe" />
+          <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+          <ScalarProperty Name="Fecha_Compra" ColumnName="Fecha_Compra" />
+          <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+          <ScalarProperty Name="idSucursal" ColumnName="idSucursal" />
+          <ScalarProperty Name="IdPedido" ColumnName="IdPedido" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pedidos_Detalle">
+      <EntityTypeMapping TypeName="AntilopeWebDBModel.Pedidos_Detalle">
+        <MappingFragment StoreEntitySet="Pedidos_Detalle">
+          <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+          <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+          <ScalarProperty Name="Precio" ColumnName="Precio" />
+          <ScalarProperty Name="SKU" ColumnName="SKU" />
+          <ScalarProperty Name="idPedido" ColumnName="idPedido" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

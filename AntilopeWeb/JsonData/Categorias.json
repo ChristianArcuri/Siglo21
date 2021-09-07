@@ -1,0 +1,22 @@
+[
+  {
+    "Id": 1,
+    "Nombre": "Lavado",
+    "Imagen": "img/category/cat-lavado.jpg"
+  },
+  {
+    "Id": 2,
+    "Nombre": "Desayuno",
+    "Imagen": "img/category/cat-desayuno.png"
+  },
+  {
+    "Id": 3,
+    "Nombre": "Informatica",
+    "Imagen": "img/category/cat-informatica.jpg"
+  },
+  {
+    "Id": 4,
+    "Nombre": "Climatizacion",
+    "Imagen": "img/category/cat-climatizacion.jpg"
+  }
+]

@@ -1,0 +1,408 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterNew.Master.cs" Inherits="AntilopeWeb.MasterNew" %>
+<%@ Register Src="~/WebControls/UCCarritoDisplay.ascx" TagPrefix="uc1" TagName="UCCarritoDisplay" %>
+<%@ Register Src="~/WebControls/UCLogin.ascx" TagPrefix="uc1" TagName="UCLogin" %>
+
+
+<!DOCTYPE html>
+<!--[if IE 9]> <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js " lang="en"> <!--<![endif]-->
+
+<head>
+	<!-- basic page needs -->	
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Antilope SA</title>
+    <meta name="description" content="Antilope - Articulos para el hogar" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">	
+	<link rel="shortcut icon" type="image/x-icon" href="img/faviconmy.ico">
+	
+	<asp:PlaceHolder runat="server">
+        <%: Styles.Render("~/bundles/MasterAdmCss") %>
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>	
+	<!--[if lt IE 9]>
+		<script src="js/vendor/html5shiv.min.js"></script>
+		<script src="js/vendor/respond.min.js"></script>
+	<![endif]-->	
+    <asp:ContentPlaceHolder ID="CphJsSuperior" runat="server">
+        
+    </asp:ContentPlaceHolder>	
+    <script type="text/javascript"> 
+        function RefrescarUpCarro() {
+                var UpdatePanel1 = '<%=UpdatePanelCarro.ClientID%>';
+                __doPostBack(UpdatePanel1, '');
+        }
+        function BuscarArticulo() {
+            var Prod = $("#TxbBuscarProd").val();
+            window.location.href = "ShopGrid.aspx?Nombre=" + Prod;
+        }        
+        function AlertOK() {            
+            new Noty({
+                text: 'Se agregó el producto al Carrito de Compras.',
+                type: 'success', layout: 'topRight', timeout: 4000,
+                progressBar: true, closeWith: ['click', 'button'],
+                animation: { open: 'noty_effects_open', close: 'noty_effects_close' }
+            }).show();
+        }
+        function AlertError() {            
+            new Noty({
+                text: 'No se pudo agregar el item al Carrito de Compras.',
+                type: 'error', layout: 'topRight', timeout: 4000,
+                progressBar: true, closeWith: ['click', 'button'],
+                animation: { open: 'noty_effects_open', close: 'noty_effects_close' }
+            }).show();
+        }
+        function MensajeParaloguearse() {
+            $("#myModal").modal('show')
+        }
+        function OpenLoading() {
+
+            jQuery('<div id="loading"><div id="bg"></div><div id="img"></div></div>').hide().appendTo('body').fadeIn("normal");
+            jQuery(document).on("keydown", function () { return false; });
+            jQuery("#loading > #bg").css("width", jQuery(document).width() + "px")
+            jQuery("#loading > #bg").css("height", jQuery(document).height() + "px")
+
+            jQuery("#loading > #img").css("position", "fixed");
+            jQuery("#loading > #img").css("top", (jQuery(window).height() - jQuery("#loading > #img").height()) / 2 + jQuery(window).scrollTop() + "px");
+            jQuery("#loading > #img").css("left", (jQuery(window).width() - jQuery("#loading > #img").width()) / 2 + jQuery(window).scrollLeft() + "px");
+        }
+        function HideLoading() {
+            jQuery("#loading").fadeOut("normal", function () {
+                jQuery(this).remove();
+                jQuery(document).off("keydown");
+            });
+        } 
+        function AddCarrito(IdArt) {
+            $.ajax({
+                type: "POST",
+                url: "ShopGrid.aspx/AddCarrito",
+                data: "{Id: " + IdArt + "}",
+                traditional: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var Resp = (typeof response.d) == 'string' ? eval('(' + response.d + ')') : response.d;
+                    if (Resp == 1) {
+                        AlertOK();
+                    }
+                    else {
+                        AlertError();
+                    }
+                    RefrescarUpCarro();
+                },
+                error: function (result) {
+                    alert('ERROR ' + result.status + ' ' + result.statusText);
+                }
+            });
+        }
+        function DeleteCarrito(IdArt) {
+            $.ajax({
+                type: "POST",
+                url: "ShopGrid.aspx/DeleteItemCarrito",
+                data: "{Id: " + IdArt + "}",
+                traditional: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var Resp = (typeof response.d) == 'string' ? eval('(' + response.d + ')') : response.d;
+                    if (Resp == 1) {
+                        RefrescarUpCarro();
+                    }
+                },
+                error: function (result) {
+                    alert('ERROR ' + result.status + ' ' + result.statusText);
+                }
+            });
+        }
+
+
+    </script>
+    <style type="text/css">
+        .top-mycart a.top-mycart-link span {
+            display: inline;            
+        }
+
+        #loading  #bg
+        {
+            left: 0;
+            top: 0;
+            position: absolute;
+            background-color: rgba(80, 80, 80, 0.6);
+            z-index: 10;
+        }
+        
+        #loading #img
+        {            
+            background: url(img/ajax-loaders/Cube.gif);
+            opacity: 1;
+            cursor: auto;
+            width: 130px;
+            z-index: 5000;
+            height: 110px;
+            background-repeat: no-repeat;
+            position:absolute;
+        }
+       
+    </style>
+
+</head>
+<body class="index-4">
+
+    <form id="form1" runat="server">        
+        <asp:ScriptManager EnablePageMethods="true" ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        <asp:ContentPlaceHolder ID="ContentBeginAndEndHandler" runat="server">
+        
+        </asp:ContentPlaceHolder>
+		<!-- Add your site or application content here -->
+		<!-- header-area start -->
+		<header class="header-area">
+			
+            <div class="header-top">
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="welcome-mes">
+									<p>Antilope SA</p>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="header-right-menu">
+									<nav>									
+                                        <uc1:UCLogin runat="server" ID="UCLogin" />
+								    </nav>
+								</div>								
+							</div>
+						</div>
+					</div>
+				</div>
+			<!-- header-top end -->
+			<!-- header-middle start -->			
+			
+            <div class="header-middle">
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-12 col-md-3">
+								<!-- logo start -->
+								<div class="logo">
+									<a href="Home"><img src="img/LogoAntilope1.png" alt="GreenTech" /></a>
+								</div>
+								<!-- logo end -->
+							</div>
+							                        
+						    <div class="col-xs-12 col-md-6">
+                                <div class="category-search-area">
+								
+								    <div class="search-form">
+							    <!-- search start -->   
+                                <div id="panelBusqueda" onkeypress="javascript:return WebForm_FireDefaultButton(event, 'BtnBuscarItem')">                         
+                                    <div class="input-group" style="position: relative">                                
+                                      <input type="text" id="TxbBuscarProd"  class="form-control" placeholder="Buscar en todo el sitio...">
+                                      <span class="input-group-btn">
+                                        <button id="BtnBuscarItem" class="btn btn-info" onclick="BuscarArticulo();" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                                      </span>
+                                    </div><!-- /input-group -->							
+                                    </div></div>
+						        </div>
+                                <!-- search end -->
+                            </div>
+
+                            <!-- top-shoping-cart start -->
+                            <div class="col-xs-12 col-md-3">
+                                <asp:UpdatePanel ID="UpdatePanelCarro" runat="server" UpdateMode="Conditional">
+                                <ContentTemplate>
+                                <asp:Panel ID="panelCarro" runat="server">
+                                    <uc1:UCCarritoDisplay runat="server" id="UCCarritoDisplay" />
+							    </asp:Panel>
+                                </ContentTemplate>
+                                </asp:UpdatePanel>	
+							    <!-- top-shoping-cart end -->							
+						    </div>
+						</div>
+					</div>
+				</div>
+				
+			
+            <div class="header-bottom">
+					<div class="container">
+						<div class="row">	
+							<!-- mainmenu start -->
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="mainmenu">
+									<nav>
+										
+										<asp:Literal ID="LitMenuSuperior" runat="server"></asp:Literal>
+										
+									</nav>
+								</div>
+							</div>
+							<!-- mainmenu end -->
+						</div>
+						<!-- mobile menu start -->
+						<div class="row">
+							<div class="col-sm-12 mobile-menu-area">
+								<div class="mobile-menu hidden-md hidden-lg" id="mob-menu">
+									<span class="mobile-menu-title">Menu</span>
+									<nav>
+                                        <asp:Literal ID="LitMenuSupMobile" runat="server"></asp:Literal>
+										
+									</nav>
+								</div>						
+							</div>
+						</div>
+						<!-- mobile menu end -->						
+					</div>
+				</div>
+				
+			<!-- header-bottom end -->
+		</header>
+		<!-- header-area end -->
+		<!-- slider-area start -->
+		<section class="slider-area">
+            <asp:ContentPlaceHolder ID="CphSlider" runat="server">
+        
+            </asp:ContentPlaceHolder>				
+		</section>
+		<!-- slider-area end -->
+		<section class="top-maincontent">
+            <asp:ContentPlaceHolder ID="CphSaleDay" runat="server">
+				
+            </asp:ContentPlaceHolder>				
+		</section>
+
+        <section class="tab-carousel-product">
+            <asp:ContentPlaceHolder ID="CphMostView" runat="server">
+				
+            </asp:ContentPlaceHolder>					
+		</section>	
+
+        <section class="new-product-area">
+            <asp:ContentPlaceHolder ID="CphNewsProd" runat="server">
+        
+            </asp:ContentPlaceHolder>	
+				
+		</section>
+		
+		
+		<!-- Shop by category area start -->
+        <section class="shop-by-category">
+            <asp:ContentPlaceHolder ID="CphCategories" runat="server">
+        
+            </asp:ContentPlaceHolder>	
+			
+		</section>
+		<!-- Shop by category area end -->
+
+
+
+		<!-- footer-area start -->
+		<footer class="footer-area">
+			<!-- footer-top start -->
+			<div class="footer-top">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+							<!-- single-footer start -->
+							<div class="single-footer">
+								<h2>Mi Cuenta</h2>
+								<ul>
+									<li><a href="MiCuenta.aspx">Mi Cuenta</a></li>	
+                                    <li><a href="MisPedidos.aspx">Mis Pedidos</a></li>	                                    					
+									<li><a href="DetalleCarrito.aspx">Mi Carrito</a></li>																		
+									<li><a href="Home.aspx?logout=true">Salir</a></li>
+								</ul>
+							</div>
+							<!-- single-footer end -->
+						</div>						
+						<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 hidden-sm hidden-xs">
+							<!-- single-footer start -->
+							<div class="single-footer">
+								<h2>Información</h2>
+								<ul>
+									<li><a href="Nosotros">Nosotros</a></li>
+									<li><a href="Politicas">Políticas</a></li>																											
+									
+								</ul>
+							</div>
+							<!-- single-footer end -->
+						</div>
+						
+						<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+							<!-- single-footer start -->
+							<div class="single-footer">
+								<h2>Contacto</h2>
+								<div class="address-info">									
+									<p><strong>WhatsApp: </strong> <span> 11-3328-6763</span></p>									
+									<p><strong>Email: </strong> <span> <a href="mailto:info@antilopesa.com">info@antilopesa.com</a></span></p>
+                                    <p><strong>Facebook: </strong> <span> <a href="https://www.facebook.com/antilopesa/"> Antilope SA</a></span></p>
+                                       
+								</div>	                                				
+							</div>
+							<!-- single-footer end -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- footer-top end -->
+			
+			<!-- footer bottom start -->
+			<div class="footer-bottom">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="copy-right-area">														
+								
+							</div>
+                            
+							<!-- scroll-to-top-start -->
+							<div class="scroll-to-top">
+								<a href="#" class="greentech-scrollertop">scroll</a>
+							</div>	
+							<!-- scroll-to-top-end -->							
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- footer bottom end -->
+		</footer>
+		<!-- footer-area end -->
+		
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <h5 class="modal-title" id="exampleModalLabel">Atención!</h5>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+              </div>
+              <div class="modal-body">
+                Para poder agregar Productos a su Carrito debe hacer click en "Ingresar" y luego colocar su Usuario y Clave.
+              </div>
+              <div class="modal-footer">
+                    <button type="button" onclick="location.href='Login.aspx';" class="btn btn-primary">Ingresar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Seguir como Invitado</button>                
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+	
+    </form>
+    <!-- jquery js -->
+    <asp:PlaceHolder runat="server">        
+        <%: Scripts.Render("~/bundles/ScriptsFootAdmin") %>
+        <script>
+            new WOW().init();
+        </script>
+    </asp:PlaceHolder>    
+		
+    <asp:ContentPlaceHolder ID="CphJsInferior" runat="server">
+        
+    </asp:ContentPlaceHolder>
+</body>
+</html>
